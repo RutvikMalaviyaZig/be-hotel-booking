@@ -17,12 +17,18 @@ jobs:
         run: |
           echo "$EC2_SSH_KEY" > ec2_key.pem
           chmod 600 ec2_key.pem
-          scp -i ec2_key.pem -o StrictHostKeyChecking=no -r . $EC2_USER@$EC2_HOST:/home/$EC2_USER/my-node-app
+
+          ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "
+            rm -rf /home/$EC2_USER/be-hotel-booking &&
+            mkdir -p /home/$EC2_USER/be-hotel-booking
+          "
+
+          scp -i ec2_key.pem -o StrictHostKeyChecking=no -r . $EC2_USER@$EC2_HOST:/home/$EC2_USER/be-hotel-booking
 
       - name: Inject env vars and restart Docker
         run: |
           ssh -i ec2_key.pem -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST <<EOF
-            cd /home/$EC2_USER/my-node-app
+            cd /home/$EC2_USER/be-hotel-booking
 
             # Create .env dynamically
             echo "NODE_ENV=${NODE_ENV}" > .env
@@ -31,8 +37,6 @@ jobs:
             echo "AWS_REGION=${AWS_REGION}" >> .env
             echo "ENABLE_CRON=${ENABLE_CRON}" >> .env
             echo "JWT_SECRET=${JWT_SECRET}" >> .env
-            echo "API_KEY=${API_KEY}" >> .env
-            echo "DB_URL=${DB_URL}" >> .env
 
             docker compose down
             docker compose up -d --build
@@ -47,5 +51,3 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION }}
       ENABLE_CRON: ${{ secrets.ENABLE_CRON }}
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
-      API_KEY: ${{ secrets.API_KEY }}
-      DB_URL: ${{ secrets.DB_URL }}

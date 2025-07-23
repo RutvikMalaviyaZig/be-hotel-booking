@@ -4,7 +4,7 @@ services:
   node-app:
     build: .
     ports:
-      - "5000:5000"
+      - "80:5000"
     volumes:
       - app-data:/usr/src/app/data
     restart: unless-stopped

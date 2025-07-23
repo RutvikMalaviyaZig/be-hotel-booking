@@ -1,0 +1,90 @@
+{
+    "File": {
+        "Uploaded": "File uploaded successfully",
+        "Deleted": "File deleted successfully"
+    },
+    "Booking": {
+        "CreateSuccess": "Booking created successfully",
+        "CreateFailed": "Booking create failed",
+        "UpdateSuccess": "Booking updated successfully",
+        "UpdateFailed": "Booking update failed",
+        "DeleteSuccess": "Booking deleted successfully",
+        "DeleteFailed": "Booking delete failed",
+        "BookingNotFound": "Booking not found",
+        "BookingCancelled": "Booking cancelled successfully"
+    },
+    "Payment": {
+        "UpdateSuccess": "Payment updated successfully",
+        "UpdateFailed": "Payment update failed",
+        "DeleteSuccess": "Payment deleted successfully",
+        "DeleteFailed": "Payment delete failed"
+    },
+    "User": {
+        "CreateSuccess": "User created successfully",
+        "CreateFailed": "User create failed",
+        "UpdateSuccess": "User updated successfully",
+        "UpdateFailed": "User update failed",
+        "DeleteSuccess": "User deleted successfully",
+        "DeleteFailed": "User delete failed",
+        "UserNotFound": "User not found",
+        "InvalidPassword": "Invalid password",
+        "UserAlreadyExists": "User already exists",
+        "RecentSearchedCitiesStoredSuccessfully": "Recent searched cities stored successfully",
+        "SignInSuccess": "User signed in successfully",
+        "SignUpSuccess": "User signed up successfully",
+        "SignOutSuccess": "User signed out successfully",
+        "Unauthorized": "Unauthorized"
+    },
+    "Hotel": {
+        "CreateSuccess": "Hotel created successfully",
+        "CreateFailed": "Hotel create failed",
+        "UpdateSuccess": "Hotel updated successfully",
+        "UpdateFailed": "Hotel update failed",
+        "DeleteSuccess": "Hotel deleted successfully",
+        "DeleteFailed": "Hotel delete failed",
+        "HotelNotFound": "Hotel not found",
+        "HotelAlreadyExists": "Hotel already exists"
+    },
+    "Room": {
+        "CreateSuccess": "Room created successfully",
+        "CreateFailed": "Room create failed",
+        "UpdateSuccess": "Room updated successfully",
+        "UpdateFailed": "Room update failed",
+        "DeleteSuccess": "Room deleted successfully",
+        "DeleteFailed": "Room delete failed",
+        "RoomNotFound": "Room not found",
+        "RoomNotAvailable": "Room not available"
+    },
+    "Admin": {
+        "CreateSuccess": "Admin created successfully",
+        "CreateFailed": "Admin create failed",
+        "SignUpSuccess": "Admin signed up successfully",
+        "SignInSuccess": "Admin signed in successfully",
+        "SignOutSuccess": "Admin signed out successfully",
+        "UpdateSuccess": "Admin updated successfully",
+        "UpdateFailed": "Admin update failed",
+        "DeleteSuccess": "Admin deleted successfully",
+        "DeleteFailed": "Admin delete failed",
+        "AdminNotFound": "Admin not found",
+        "InvalidPassword": "Invalid password",
+        "AdminAlreadyExists": "Admin already exists"
+    },
+    "HotelOwner": {
+        "CreateSuccess": "HotelOwner created successfully",
+        "CreateFailed": "HotelOwner create failed",
+        "UpdateSuccess": "HotelOwner updated successfully",
+        "UpdateFailed": "HotelOwner update failed",
+        "DeleteSuccess": "HotelOwner deleted successfully",
+        "DeleteFailed": "HotelOwner delete failed"
+    },
+    "General": {
+        "RefreshTokenRequired": "Refresh token is required",
+        "Unauthorized": "Unauthorized",
+        "InternalServerError": "Internal server error"
+    },
+    "Stripe": {
+        "WebhookSignatureVerificationFailed": "Webhook signature verification failed",
+        "ServerConfigurationError": "Server configuration error",
+        "NoBookingIdInMetadata": "No bookingId in metadata"
+    }
+}

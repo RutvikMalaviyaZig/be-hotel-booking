@@ -34,8 +34,8 @@ jobs:
             echo "API_KEY=${API_KEY}" >> .env
             echo "DB_URL=${DB_URL}" >> .env
 
-            docker-compose down
-            docker-compose up -d --build
+            docker compose down
+            docker compose up -d --build
           EOF
     env:
       EC2_HOST: ${{ secrets.EC2_HOST }}

@@ -1,5 +1,5 @@
 import { Hotel, Booking, Room } from "../models/index.js";
-import { HTTP_STATUS_CODE, EVENT_TYPES, ACTIONS, transporter, mongoose } from "../config/constant.js";
+import { HTTP_STATUS_CODE, EVENT_TYPES, ACTIONS, transporter, mongoose, VALIDATION_EVENTS } from "../config/constant.js";
 import { sendSQSMessage } from "../helpers/SQS/sendData.js";
 import { validateBooking } from "../helpers/validation/BookingValidation.js";
 
@@ -308,12 +308,12 @@ export const getHotelBookings = async (req, res) => {
   session.startTransaction();
   try {
     // validate data
-    const validateBookingData = validateBooking({ hotel: req.auth.userId, eventCode: VALIDATION_EVENTS.GET_HOTEL_BOOKINGS });
+    const validateBookingData = validateBooking({ hotel: req.user._id, eventCode: VALIDATION_EVENTS.GET_HOTEL_BOOKINGS });
     if (validateBookingData.hasError) {
       return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ success: false, message: validateBookingData.errors });
     }
     // find hotel
-    const hotel = await Hotel.findOne({ owner: req.auth.userId });
+    const hotel = await Hotel.findOne({ owner: req.user._id });
     if (!hotel) {
       return res
         .status(HTTP_STATUS_CODE.NOT_FOUND)

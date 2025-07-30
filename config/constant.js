@@ -11,6 +11,26 @@ import cron from 'node-cron';
 import multer from "multer";
 import i18n from "i18n";
 import validator from "validatorjs";
+import dbPromise from "./db.js";
+import { ObjectId } from "mongodb";
+
+const INDEX_NAME = {
+  LOCATION_2DSPHERE: "location_2dsphere",
+}
+
+const INDEX_OPTIONS = {
+  location: "2dsphere",
+}
+
+const MODELS = {
+  USER: "users",
+  ADMIN: "admins",
+  HOTEL: "hotels",
+  ROOM: "rooms",
+  BOOKING: "bookings",
+}
+
+const db = await dbPromise;
 
 // Get directory path in ES modules
 import { fileURLToPath } from 'url';
@@ -134,8 +154,19 @@ const VALIDATION_EVENTS = {
   TOGGLE_ROOM_AVAILABILITY: "toggleRoomAvailability",
   GET_OWNER_ROOMS: "getOwnerRooms",
   GOOGLE_SIGN_IN: "googleSignIn",
+  FIND_HOTEL_ON_GEO_LOCATION: "findHotelOnGeoLocation",
+}
+
+const RADIUS = {
+  HOTEL: 5000, // in meters (5km)
+}
+
+const LOGIN_WITH = {
+  GOOGLE: "google",
+  FACEBOOK: "facebook",
+  EMAIL: "email",
 }
 
 export default i18n;
 
-export { SQS, cron, stripe, transporter, mongoose, bcrypt, jwt, cloudinary, Webhook, multer, EVENT_TYPES, ACTIONS, MESSAGES, HTTP_STATUS_CODE, TOKEN_EXPIRY, USER_ROLES, PAYMENT_STATUS, BOOKING_STATUS, CURRENCY, PAYMENT_METHOD, validator, PAYMENT_EVENTS, VALIDATION_EVENTS, i18n };
+export { SQS, cron, stripe, transporter, mongoose, bcrypt, jwt, cloudinary, Webhook, multer, EVENT_TYPES, ACTIONS, MESSAGES, HTTP_STATUS_CODE, TOKEN_EXPIRY, USER_ROLES, PAYMENT_STATUS, BOOKING_STATUS, CURRENCY, PAYMENT_METHOD, validator, PAYMENT_EVENTS, VALIDATION_EVENTS, i18n, db, ObjectId, RADIUS, INDEX_NAME, INDEX_OPTIONS, MODELS, LOGIN_WITH };

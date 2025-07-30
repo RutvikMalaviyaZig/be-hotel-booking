@@ -1,5 +1,4 @@
-import { Admin } from "../models/index.js";
-import { jwt, HTTP_STATUS_CODE } from "../config/constant.js";
+import { jwt, HTTP_STATUS_CODE, ObjectId, db } from "../config/constant.js";
 
 export const protect = async (req, res, next) => {
     try {
@@ -8,13 +7,13 @@ export const protect = async (req, res, next) => {
         // verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         // get user id from token
-        req.auth.userId = decoded.userId;
+        const userId = decoded.userId;
         // check if user exists
-        if (!req.auth.userId) {
+        if (!userId) {
             return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).json({ success: false, message: "Unauthorized" })
         } else {
             // get user from database
-            const admin = await Admin.findById(req.auth.userId);
+            const admin = await db.collection("admins").findOne({ _id: new ObjectId(userId) });
             // check if user exists
             if (!admin) {
                 return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).json({ success: false, message: "Unauthorized" })

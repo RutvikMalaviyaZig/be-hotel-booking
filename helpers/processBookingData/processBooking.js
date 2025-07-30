@@ -1,9 +1,6 @@
-import { Booking } from "../../models/index.js";
-import { ACTIONS, MESSAGES, mongoose } from "../../config/constant.js";
+import { ACTIONS, MESSAGES, db, MODELS, ObjectId } from "../../config/constant.js";
 
 export const processBooking = async (data) => {
-    const session = await mongoose.startSession();
-    session.startTransaction();
     try {
         // Extract common fields
         const { _id, user, room, hotel, checkInDate, checkOutDate, totalPrice, guests, action } = data;
@@ -13,29 +10,25 @@ export const processBooking = async (data) => {
             if (!_id) {
                 return { isError: true, data: MESSAGES.INVALID_ID };
             }
-            const deleted = await Booking.findByIdAndDelete(_id, { session });
+            const deleted = await db.collection(MODELS.BOOKING).deleteOne({ _id: new ObjectId(String(_id)) });
             if (!deleted) {
                 return { isError: true, data: MESSAGES.NOT_FOUND };
             }
-            await session.commitTransaction();
-            session.endSession();
             return { isError: false, data: deleted };
         }
 
         // Handle create/update operations
         if (_id && action === ACTIONS.UPDATE) {
             // Update existing booking
-            const booking = await Booking.findByIdAndUpdate(
-                _id,
+            const booking = await db.collection(MODELS.BOOKING).updateOne(
+                { _id: new ObjectId(String(_id)) },
                 { checkInDate, checkOutDate, guests },
                 { new: true }
             );
-            await session.commitTransaction();
-            session.endSession();
             return { isError: false, data: booking };
         } else if (action === ACTIONS.CREATE) {
             // Create new booking
-            const booking = await Booking.create([{
+            const booking = await db.collection(MODELS.BOOKING).insertOne({
                 user,
                 room,
                 hotel,
@@ -43,14 +36,10 @@ export const processBooking = async (data) => {
                 checkOutDate,
                 totalPrice,
                 guests
-            }], { session });
-            await session.commitTransaction();
-            session.endSession();
+            });
             return { isError: false, data: booking };
         }
     } catch (error) {
-        await session.abortTransaction();
-        session.endSession();
         return { isError: true, data: error };
     }
 }

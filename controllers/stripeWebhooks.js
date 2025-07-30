@@ -1,4 +1,4 @@
-import { stripe, HTTP_STATUS_CODE, BOOKING_STATUS, PAYMENT_STATUS, PAYMENT_METHOD, PAYMENT_EVENTS, mongoose } from "../config/constant.js";
+import { stripe, HTTP_STATUS_CODE, BOOKING_STATUS, PAYMENT_STATUS, PAYMENT_METHOD, PAYMENT_EVENTS, db, MODELS, ObjectId } from "../config/constant.js";
 import { Booking } from "../models/index.js";
 
 /**
@@ -10,10 +10,6 @@ import { Booking } from "../models/index.js";
 * @author Rutvik Malaviya (Zignuts)
 */
 export const stripeWebhooks = async (req, res) => {
-    // start session and transaction
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
     try {
         // get data from request headers and body
         const sig = req.headers["stripe-signature"];
@@ -60,8 +56,8 @@ export const stripeWebhooks = async (req, res) => {
             switch (event.type) {
                 case PAYMENT_EVENTS.PAYMENT_INTENT_SUCCEEDED: {
                     // update booking status
-                    const updatedBooking = await Booking.findByIdAndUpdate(
-                        bookingId,
+                    const updatedBooking = await db.collection(MODELS.BOOKING).updateOne(
+                        { _id: new ObjectId(String(bookingId)) },
                         {
                             status: BOOKING_STATUS.COMPLETED,
                             paymentStatus: PAYMENT_STATUS.PAID,
@@ -82,8 +78,8 @@ export const stripeWebhooks = async (req, res) => {
                 // if payment failed
                 case PAYMENT_EVENTS.PAYMENT_INTENT_PAYMENT_FAILED: {
                     // update booking status
-                    await Booking.findByIdAndUpdate(
-                        bookingId,
+                    await db.collection(MODELS.BOOKING).updateOne(
+                        { _id: new ObjectId(String(bookingId)) },
                         {
                             status: BOOKING_STATUS.PAYMENT_FAILED,
                             paymentStatus: PAYMENT_STATUS.FAILED,
@@ -96,8 +92,8 @@ export const stripeWebhooks = async (req, res) => {
                 // if payment canceled
                 case PAYMENT_EVENTS.PAYMENT_INTENT_CANCELED: {
                     // update booking status
-                    await Booking.findByIdAndUpdate(
-                        bookingId,
+                    await db.collection(MODELS.BOOKING).updateOne(
+                        { _id: new ObjectId(String(bookingId)) },
                         {
                             status: BOOKING_STATUS.CANCELLED,
                             paymentStatus: PAYMENT_STATUS.CANCELLED,

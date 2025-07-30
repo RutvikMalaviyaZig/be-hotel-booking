@@ -1,13 +1,11 @@
 import express from "express";
 import "dotenv/config";
 import cors from "cors";
-import connectDB from "./config/db.js";
 import router from "./routes/index.js";
 import connectCloudinary from "./config/cloudinary.js";
 import { i18n } from "./config/constant.js";
 import { corsOptions } from "./config/security.js";
 
-connectDB();
 connectCloudinary();
 
 const app = express();

@@ -1,5 +1,5 @@
 import express from "express";
-import { protect } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/adminTokenCheck.js";
 import { signInAdmin, signUpAdmin, signOutAdmin, refreshToken, getAllUsers, getAllHotelOwners, getAllHotels, getAllRooms, getAllBookings, getHotelBookings, getUserBookings } from "../controllers/adminController.js";
 
 const adminRouter = express.Router();

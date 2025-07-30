@@ -14,6 +14,8 @@ const validateHotel = (bodyData) => {
                 address: 'string|required',
                 contact: 'string|required',
                 city: 'string|required',
+                latitude: 'numeric|required',
+                longitude: 'numeric|required',
             };
             break;
         }
@@ -25,6 +27,8 @@ const validateHotel = (bodyData) => {
                 contact: 'string|required',
                 city: 'string|required',
                 hotelId: 'string|required',
+                latitude: 'numeric|required',
+                longitude: 'numeric|required',
             };
             break;
         }
@@ -32,6 +36,15 @@ const validateHotel = (bodyData) => {
             rules = {
                 id: 'string|required',
                 hotelId: 'string|required',
+                latitude: 'numeric|required',
+                longitude: 'numeric|required',
+            };
+            break;
+        }
+        case VALIDATION_EVENTS.FIND_HOTEL_ON_GEO_LOCATION: {
+            rules = {
+                latitude: 'numeric|required',
+                longitude: 'numeric|required',
             };
             break;
         }

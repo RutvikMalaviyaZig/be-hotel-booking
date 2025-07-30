@@ -1,10 +1,10 @@
 import express from "express";
 import { protect } from "../middleware/authMiddleware.js";
-import { getUserData, signInUser, signUpUser, storeRecentSearchedCities, signOutUser, refreshToken, googleSignIn, getUserDetails } from "../controllers/userController.js";
+import { getUserRecentSearchedCitiesData, signInUser, signUpUser, storeRecentSearchedCities, signOutUser, refreshToken, googleSignIn, getUserDetails } from "../controllers/userController.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/", protect, getUserData);
+userRouter.get("/", protect, getUserRecentSearchedCitiesData);
 userRouter.post("/store-recent-search", protect, storeRecentSearchedCities);
 userRouter.post("/sign-up", signUpUser);
 userRouter.post("/sign-in", signInUser);

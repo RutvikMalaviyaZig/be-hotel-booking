@@ -1,5 +1,5 @@
-import { User } from "../models/index.js";
-import { jwt, HTTP_STATUS_CODE } from "../config/constant.js";
+import { jwt, HTTP_STATUS_CODE, db } from "../config/constant.js";
+import { ObjectId } from "mongodb";
 
 export const protect = async (req, res, next) => {
     try {
@@ -8,19 +8,23 @@ export const protect = async (req, res, next) => {
         // verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         // get user id from token
-        req.user = decoded.userId;
+        const userId = decoded.userId;
         // check if user exists
-        if (!req.user) {
+        if (!userId) {
             return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).json({ success: false, message: req.__('General.Unauthorized') })
         } else {
             // get user from database
-            const user = await User.findById(req.user);
+            const user = await db.collection("users").findOne({ _id: new ObjectId(String(userId)) });
+
             // check if user exists
             if (!user) {
                 return res.status(HTTP_STATUS_CODE.UNAUTHORIZED).json({ success: false, message: req.__('General.Unauthorized') })
             }
             // set user to req.user
-            req.user = user;
+            req.user = {
+                ...user,
+                _id: user._id.toString()
+            };
             // call next middleware
             next();
         }

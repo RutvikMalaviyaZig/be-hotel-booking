@@ -373,7 +373,12 @@ export const getHotelBookings = async (req, res) => {
             return res.status(HTTP_STATUS_CODE.BAD_REQUEST).json({ success: false, message: req.__('Hotel.HotelNotFound') });
         }
         // find bookings
-        const bookings = await db.collection(MODELS.BOOKING).find({ hotel: hotel._id }).aggregate([
+        const bookings = await db.collection(MODELS.BOOKING).aggregate([
+            {
+                $match: {
+                    hotel: hotel._id
+                }
+            },
             {
                 $lookup: {
                     from: MODELS.ROOM,
@@ -398,7 +403,7 @@ export const getHotelBookings = async (req, res) => {
                     as: "user"
                 }
             }
-        ]).sort({ createdAt: -1 });
+        ]).toArray().sort({ createdAt: -1 });
         // calculate total bookings and total revenue
         const totalBookings = bookings.length;
         const totalRevenue = bookings.reduce((acc, booking) => acc + booking.totalPrice, 0);
@@ -453,7 +458,7 @@ export const getUserBookings = async (req, res) => {
                     as: "hotel"
                 }
             }
-        ]).sort({ createdAt: -1 });
+        ]).toArray().sort({ createdAt: -1 });
         // calculate total bookings and total revenue
         const totalBookings = bookings.length;
         const totalRevenue = bookings.reduce((acc, booking) => acc + booking.totalPrice, 0);

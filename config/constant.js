@@ -15,11 +15,59 @@ import dbPromise from "./db.js";
 import { ObjectId } from "mongodb";
 
 const INDEX_NAME = {
-  LOCATION_2DSPHERE: "location_2dsphere",
+  // Single field indexes
+  EMAIL: 'email_index',
+  PHONE: 'phone_index',
+
+  // Compound indexes
+  USER_AUTH: 'user_auth_index',
+  BOOKING_DATES: 'booking_dates_index',
+
+  // Text indexes
+  HOTEL_SEARCH: 'hotel_search_index',
+
+  // Geospatial
+  LOCATION_2DSPHERE: 'location_2dsphere',
+
+  // Rating index
+  RATING: 'rating_index',
+
+  // Room indexes
+  HOTEL_ROOM_NUMBER: 'hotel_room_number',
+  PRICE: 'price_index',
+
+  // Booking indexes
+  USER_BOOKINGS: 'user_bookings_index',
+  ROOM_BOOKINGS: 'room_bookings_index',
+  BOOKING_STATUS: 'booking_status_index',
+
+  // Admin index
+  ADMIN_EMAIL: 'admin_email_index'
 }
 
 const INDEX_OPTIONS = {
-  location: "2dsphere",
+  // Single field index options
+  email: 1,
+  phone: 1,
+
+  // Compound index options
+  bookingDates: { checkInDate: 1, checkOutDate: 1 },
+
+  // Text index options
+  hotelSearch: {
+    name: "text",
+    address: "text"
+  },
+
+  // Geospatial
+  location: '2dsphere',
+
+  // Other field paths
+  priceAmount: 'price.amount',
+
+  // Sort orders
+  ASC: 1,
+  DESC: -1
 }
 
 const MODELS = {
